@@ -1,43 +1,414 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>LeafMind</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LeafMind — Intelligence, Naturally.</title>
+  <meta name="description" content="LeafMind is an AI-powered writing and research workspace. Draft faster, think clearer, ship more." />
+  <meta property="og:title" content="LeafMind — Intelligence, Naturally." />
+  <meta property="og:description" content="An AI-powered writing and research workspace for founders, teams, and creators." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/logo.jpg" />
+  <meta name="theme-color" content="#0B1220" />
+
   <style>
-    body { font-family: Arial; margin: 0; background: #0f172a; color: white; text-align: center; }
-    .container { max-width: 720px; margin: 80px auto; padding: 20px; }
-    h1 { font-size: 42px; margin-bottom: 10px; }
-    p { color: #cbd5e1; line-height: 1.6; }
-    .card { margin-top: 30px; padding: 20px; background: #111827; border-radius: 10px; }
-    a { color: #60a5fa; }
+    :root{
+      --bg:#0B1220;
+      --panel:#0F1B33;
+      --panel2:#0D162B;
+      --text:#EAF0FF;
+      --muted:#A9B6D6;
+      --line:rgba(255,255,255,.08);
+      --brand:#3B82F6;
+      --brand2:#22C55E;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius:16px;
+      --max:1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(59,130,246,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(34,197,94,.25), transparent 55%),
+        radial-gradient(800px 500px at 50% 100%, rgba(99,102,241,.18), transparent 60%),
+        var(--bg);
+      line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+    .nav{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,18,32,.82), rgba(11,18,32,.35));
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+    .brand img{width:34px;height:34px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .brand span{font-size:15px}
+    .menu{display:flex;align-items:center;gap:18px;color:var(--muted);font-size:14px}
+    .menu a{padding:8px 10px;border-radius:10px}
+    .menu a:hover{background:rgba(255,255,255,.06);color:var(--text)}
+    .cta{display:flex;align-items:center;gap:10px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);font-weight:600;font-size:14px;
+    }
+    .btn:hover{background:rgba(255,255,255,.07)}
+    .btn.primary{
+      border:none;
+      background: linear-gradient(135deg, var(--brand), #7C3AED);
+      box-shadow: 0 16px 40px rgba(59,130,246,.25);
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .hero{padding:56px 0 24px}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
+    .pill{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.04);color:var(--muted);font-size:13px;
+    }
+    .pill b{color:var(--text)}
+    h1{margin:14px 0 12px;font-size:44px;line-height:1.06;letter-spacing:-.8px}
+    .sub{color:var(--muted);font-size:16px;max-width:58ch}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .mini{margin-top:14px;color:var(--muted);font-size:13px}
+    .mini code{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.06);padding:3px 7px;border-radius:8px;border:1px solid var(--line)}
+    .panel{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .mock{padding:18px}
+    .mock-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .dots{display:flex;gap:6px}
+    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.18)}
+    .dot:nth-child(2){background:rgba(59,130,246,.35)}
+    .dot:nth-child(3){background:rgba(34,197,94,.28)}
+    .mock-title{color:var(--muted);font-size:13px}
+    .card{
+      border:1px solid var(--line);
+      background: rgba(13,22,43,.55);
+      border-radius:14px;
+      padding:14px;
+      margin-top:10px;
+    }
+    .row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .tag{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:4px 8px;border-radius:999px}
+    .kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .kpi .card{margin:0}
+    .kpi b{font-size:18px}
+    .kpi span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .section{padding:34px 0}
+    .section h2{margin:0 0 10px;font-size:26px;letter-spacing:-.3px}
+    .section p{margin:0;color:var(--muted)}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    .feat{padding:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .feat h3{margin:0 0 8px;font-size:15px}
+    .feat p{margin:0;color:var(--muted);font-size:14px}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    .plan{padding:18px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .plan.pop{background:linear-gradient(180deg, rgba(59,130,246,.20), rgba(255,255,255,.03));border-color:rgba(59,130,246,.35)}
+    .plan .name{display:flex;justify-content:space-between;align-items:center}
+    .plan h3{margin:0;font-size:16px}
+    .price{margin-top:10px;font-size:28px;font-weight:800}
+    .price small{font-size:13px;color:var(--muted);font-weight:600}
+    .list{margin-top:12px;display:grid;gap:8px;color:var(--muted);font-size:14px}
+    .list div{display:flex;gap:8px}
+    .check{color:var(--brand2);font-weight:900}
+    .faq{margin-top:14px;display:grid;gap:10px}
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      padding:12px 14px;
+    }
+    summary{cursor:pointer;font-weight:700}
+    details p{margin:8px 0 0;color:var(--muted);font-size:14px}
+    .subscribe{
+      margin-top:14px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      padding:14px;border:1px solid var(--line);
+      border-radius:18px;background:rgba(255,255,255,.03)
+    }
+    input{
+      flex:1;min-width:220px;
+      padding:12px 12px;border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    input::placeholder{color:rgba(169,182,214,.7)}
+    footer{
+      padding:28px 0 36px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+    .links{display:flex;gap:14px;flex-wrap:wrap}
+    .links a{color:var(--muted)}
+    .links a:hover{color:var(--text)}
+    .small{opacity:.9}
+    .mobile-only{display:none}
+
+    @media (max-width: 900px){
+      .hero-grid{grid-template-columns:1fr;gap:14px}
+      h1{font-size:38px}
+      .features,.pricing{grid-template-columns:1fr}
+      .menu{display:none}
+      .mobile-only{display:inline-flex}
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>LeafMind</h1>
-    <p>AI-powered productivity and writing platform.</p>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="LeafMind home">
+        <img src="/assets/logo.jpg" alt="LeafMind logo" />
+        <span>LeafMind</span>
+      </a>
 
-    <div class="card">
-      <p><strong>Company:</strong> LeafMind Pte. Ltd.</p>
-      <p><strong>Location:</strong> Singapore</p>
-      <p><strong>Contact:</strong> hi@leafmind.ai</p>
-    </div>
+      <nav class="menu" aria-label="Primary">
+        <a href="#product">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <div class="card">
-      <h3>About</h3>
-      <p>
-        LeafMind provides AI-powered software and digital services, including intelligent writing,
-        research assistance, and content creation tools delivered via a subscription-based SaaS platform.
-        Our services are provided online to global users through our cloud-based applications.
-      </p>
+      <div class="cta">
+        <a class="btn mobile-only" href="#pricing">Pricing</a>
+        <a class="btn" href="#" onclick="return false;">Log in</a>
+        <a class="btn primary" href="#contact">Request access</a>
+      </div>
     </div>
+  </header>
 
-    <div class="card">
-      <h3>Legal</h3>
-      <p><a href="#">Privacy Policy</a></p>
-      <p><a href="#">Terms of Service</a></p>
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="pill">
+            <span>⚡</span>
+            <span><b>AI workspace</b> for writing & research</span>
+          </div>
+
+          <h1>Intelligence, Naturally.</h1>
+          <p class="sub">
+            LeafMind helps you draft faster, think clearer, and ship more — with an AI-native writing and research workspace built for founders, teams, and creators.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#pricing">Start with a plan</a>
+            <a class="btn" href="#product">See how it works</a>
+          </div>
+
+          <div class="mini">
+            Payments via <code>Stripe</code>. Built with privacy and security in mind.
+          </div>
+        </div>
+
+        <div class="panel" aria-label="Product preview">
+          <div class="mock">
+            <div class="mock-top">
+              <div class="dots" aria-hidden="true"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+              <div class="mock-title">Workspace preview</div>
+            </div>
+
+            <div class="card">
+              <div class="row">
+                <div>
+                  <div style="font-weight:800">Project: Investor update</div>
+                  <div style="color:var(--muted);font-size:13px;margin-top:4px">Summaries · Citations · Action items</div>
+                </div>
+                <span class="tag">Drafting</span>
+              </div>
+              <div style="margin-top:10px;color:var(--muted);font-size:14px">
+                Generate an executive summary, extract risks, and create a weekly plan — all from your notes and docs.
+              </div>
+            </div>
+
+            <div class="kpi">
+              <div class="card">
+                <b>2×</b>
+                <span>Faster first draft</span>
+              </div>
+              <div class="card">
+                <b>1</b>
+                <span>Source of truth workspace</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="row">
+                <div style="font-weight:800">Output</div>
+                <span class="tag">Export</span>
+              </div>
+              <div style="margin-top:10px;color:var(--muted);font-size:14px">
+                Export to Markdown / PDF. Share with teammates. Keep your workflow clean.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="product" class="section">
+      <div class="wrap">
+        <h2>Product</h2>
+        <p>Everything you need to turn messy inputs into clear, usable outputs.</p>
+
+        <div class="features">
+          <div class="feat">
+            <h3>AI drafting</h3>
+            <p>Start from a blank page or your notes. Get structured drafts with the right tone and format.</p>
+          </div>
+          <div class="feat">
+            <h3>Research & synthesis</h3>
+            <p>Summarize long materials, extract key points, and produce decision-ready briefs.</p>
+          </div>
+          <div class="feat">
+            <h3>Reusable workflows</h3>
+            <p>Save templates for weekly updates, PRDs, emails, launch pages, and more.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="wrap">
+        <h2>Pricing</h2>
+        <p>Start simple. Upgrade when you’re ready.</p>
+
+        <div class="pricing">
+          <div class="plan">
+            <div class="name">
+              <h3>Starter</h3>
+              <span class="tag">For individuals</span>
+            </div>
+            <div class="price">$9 <small>/ month</small></div>
+            <div class="list">
+              <div><span class="check">✓</span><span>Core writing workspace</span></div>
+              <div><span class="check">✓</span><span>Basic templates</span></div>
+              <div><span class="check">✓</span><span>Email support</span></div>
+            </div>
+            <div style="margin-top:14px">
+              <a class="btn primary" href="#contact">Get Starter</a>
+            </div>
+          </div>
+
+          <div class="plan pop">
+            <div class="name">
+              <h3>Pro</h3>
+              <span class="tag">Most popular</span>
+            </div>
+            <div class="price">$29 <small>/ month</small></div>
+            <div class="list">
+              <div><span class="check">✓</span><span>Advanced research & synthesis</span></div>
+              <div><span class="check">✓</span><span>More templates & exports</span></div>
+              <div><span class="check">✓</span><span>Priority support</span></div>
+            </div>
+            <div style="margin-top:14px">
+              <a class="btn primary" href="#contact">Get Pro</a>
+            </div>
+          </div>
+
+          <div class="plan">
+            <div class="name">
+              <h3>Team</h3>
+              <span class="tag">For teams</span>
+            </div>
+            <div class="price">$99 <small>/ month</small></div>
+            <div class="list">
+              <div><span class="check">✓</span><span>Shared workspace</span></div>
+              <div><span class="check">✓</span><span>Team templates</span></div>
+              <div><span class="check">✓</span><span>Admin controls</span></div>
+            </div>
+            <div style="margin-top:14px">
+              <a class="btn primary" href="#contact">Contact sales</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini" style="margin-top:10px">
+          Prices are placeholders — update anytime before launch.
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="wrap">
+        <h2>FAQ</h2>
+        <p>Quick answers for onboarding and compliance reviews.</p>
+
+        <div class="faq">
+          <details>
+            <summary>What do you sell?</summary>
+            <p>LeafMind provides software and digital services delivered online as a subscription-based SaaS product. We do not sell physical goods.</p>
+          </details>
+
+          <details>
+            <summary>Who are your customers?</summary>
+            <p>Global individuals and businesses, including founders, teams, and creators who need writing and research support.</p>
+          </details>
+
+          <details>
+            <summary>How do payments work?</summary>
+            <p>Payments are processed electronically through secure online payment providers (e.g., Stripe). Customers receive receipts/invoices digitally.</p>
+          </details>
+
+          <details>
+            <summary>Do you have a support contact?</summary>
+            <p>Yes — email us at <a href="mailto:hi@leafmind.ai">hi@leafmind.ai</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="wrap">
+        <h2>Contact</h2>
+        <p>Want early access or a demo? Leave your email and we’ll reach out.</p>
+
+        <form class="subscribe" onsubmit="event.preventDefault(); alert('Thanks! We will reach out soon.');">
+          <input type="email" placeholder="you@company.com" required />
+          <button class="btn primary" type="submit">Request access</button>
+          <a class="btn" href="mailto:hi@leafmind.ai">Email us</a>
+        </form>
+
+        <div class="mini">
+          Prefer a quick message? <a href="mailto:hi@leafmind.ai">hi@leafmind.ai</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="small">© <span id="y"></span> LeafMind. All rights reserved.</div>
+      <div class="links">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="mailto:hi@leafmind.ai">Support</a>
+      </div>
     </div>
-  </div>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
