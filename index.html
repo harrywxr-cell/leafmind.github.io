@@ -127,6 +127,20 @@
     .list div{display:flex;gap:8px}
     .check{color:var(--brand2);font-weight:900}
     .faq{margin-top:14px;display:grid;gap:10px}
+    .logo-wrap{
+      width:36px;height:36px;
+      border-radius:12px;
+      background: rgba(255,255,255,.92);
+      display:flex;align-items:center;justify-content:center;
+      border: 1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    .logo-wrap img{
+      width:28px;height:28px;
+      object-fit:contain;
+      border-radius:0;
+      box-shadow:none;
+    }
     details{
       border:1px solid var(--line);
       border-radius:14px;
@@ -177,7 +191,9 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="#top" aria-label="LeafMind home">
-        <img src="/assets/logo.png" alt="LeafMind logo" />
+        <div class="logo-wrap">
+          <img src="/assets/logo.jpg" alt="LeafMind logo" />
+        </div>
         <span>LeafMind</span>
       </a>
 
