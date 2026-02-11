@@ -141,6 +141,12 @@
       border-radius:0;
       box-shadow:none;
     }
+    .hero-logo{
+      max-width:420px;   /* 控制最大宽度 */
+      width:100%;
+      height:auto;       /* 保持比例 */
+      object-fit:contain;
+    }
     details{
       border:1px solid var(--line);
       border-radius:14px;
@@ -191,9 +197,7 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="#top" aria-label="LeafMind home">
-        <div class="logo-wrap">
-          <img src="/assets/logo.png" alt="LeafMind logo" />
-        </div>
+        <img class="hero-logo" src="/assets/logo.png" alt="LeafMind">
         <span>LeafMind</span>
       </a>
 
